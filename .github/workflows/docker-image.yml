@@ -38,6 +38,9 @@ jobs:
         with:
           repository: ${{ env.SOURCE_REPOSITORY }}
           ref: ${{ needs.get-tag.outputs.tag }}
+      - name: Apply patch
+        run: |
+          sed -i '0,/^FROM docker.io\/oven\/bun/s//FROM --platform=$BUILDPLATFORM docker.io\/oven\/bun/' Dockerfile
       - name: Set Docker Hub username
         id: dockerhub-username
         run: echo "username=${DOCKERHUB_REPOSITORY%%/*}" >> $GITHUB_OUTPUT
